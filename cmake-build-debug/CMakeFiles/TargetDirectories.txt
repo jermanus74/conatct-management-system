@@ -1,0 +1,3 @@
+E:/contact management system/cmake-build-debug/CMakeFiles/contact_management_system.dir
+E:/contact management system/cmake-build-debug/CMakeFiles/edit_cache.dir
+E:/contact management system/cmake-build-debug/CMakeFiles/rebuild_cache.dir
