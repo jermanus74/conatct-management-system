@@ -8,62 +8,75 @@ using namespace std;
 class Contact {
 private:
     int id;
-    string name;
-    string phone;
+    string name,email,phone;
 
 public:
     // Constructor
-    Contact() : id(0), name(""), phone("") {}
-
-    Contact(int id, const string& name, const string& phone) : id(id), name(name), phone(phone) {}
-
+    Contact():id(0),name(""),phone(""),email(""){};
+    Contact(int id,const string & name,const string& phone,const string& email): id(id),name(name),phone(phone),email(email){};
     // Getter functions
-    int getId() const { return id; }
-    string getName() const { return name; }
-    string getPhone() const { return phone; }
-
+    int getid()const{return id;}
+    string getname()const {return name;}
+    string getemail()const{return email;}
+    string getphone()const{return phone;}
     // Setter functions
-    void setId(int newId) { id = newId; }
-    void setName(const string& newName) { name = newName; }
-    void setPhone(const string& newPhone) { phone = newPhone; }
+    void setname(string&newName){name=newName;}
+    void setid(int new_id){id=new_id;}
+    void setemail(string&newEmail){email=newEmail;}
+    void setphone(string&phoneNo){phone=phoneNo;}
+
 
     // Display function
-    void display() const {
-        cout << "ID: " << id << ", Name: " << name << ", Phone: " << phone << endl;
-    }
+
 
     // Save contact to file
-    void saveToFile(ofstream& file) const {
-        file << id << "," << name << "," << phone << endl;
-    }
+
 
     // Load contact from string
-    static Contact fromString(const string& data) {
-        size_t firstComma = data.find(',');
-        size_t secondComma = data.find(',', firstComma + 1);
 
-        int id = stoi(data.substr(0, firstComma));
-        string name = data.substr(firstComma + 1, secondComma - firstComma - 1);
-        string phone = data.substr(secondComma + 1);
 
-        return Contact(id, name, phone);
-    }
 };
 
 // Function prototypes
-void createContact(vector<Contact>& contacts);
+/*void createContact(vector<Contact>& contacts);
 void readContacts(const vector<Contact>& contacts);
 void updateContact(vector<Contact>& contacts);
 void deleteContact(vector<Contact>& contacts);
 void saveContactsToFile(const vector<Contact>& contacts);
-void loadContactsFromFile(vector<Contact>& contacts);
+void loadContactsFromFile(vector<Contact>& contacts);*/
 
 const string contactFile = "contacts.txt";
+vector<Contact> contacts;
+
 
 int main() {
-    vector<Contact> contacts;
-    loadContactsFromFile(contacts);
+    // Create a contact using the default constructor
+    Contact contact1;
 
+    // Update contact1's details
+    string name = "Alice";
+    string phone = "123-456-7890";
+    string email = "alice@example.com";
+    contact1.setid(1);
+    contact1.setname(name);
+    contact1.setphone(phone);
+    contact1.setemail(email);
+
+    // Print contact1's details
+    cout << "Contact 1: " << contact1.getid() << ", " << contact1.getname() << ", "
+         << contact1.getphone() << ", " << contact1.getemail() << endl;
+
+    // Create a contact using the parameterized constructor
+    Contact contact2(2, "Bob", "098-765-4321", "bob@example.com");
+
+    // Print contact2's details
+    cout << "Contact 2: " << contact2.getid() << ", " << contact2.getname() << ", "
+         << contact2.getphone() << ", " << contact2.getemail() << endl;
+
+    return 0;
+}
+
+/*int main() {
     int choice;
     do {
         cout << "\n--- Contact Management System ---\n"
@@ -99,113 +112,16 @@ int main() {
     } while (choice != 5);
 
     return 0;
+}*/
+/*void createContact(vector<Contact>& contacts) {
 }
-
-void createContact(vector<Contact>& contacts) {
-    int id;
-    string name, phone;
-
-    cout << "Enter Contact ID: ";
-    cin >> id;
-    cin.ignore();
-
-    cout << "Enter Contact Name: ";
-    getline(cin, name);
-
-    cout << "Enter Phone Number: ";
-    getline(cin, phone);
-
-    contacts.emplace_back(id, name, phone);
-    cout << "Contact created successfully.\n";
-}
-
 void readContacts(const vector<Contact>& contacts) {
-    if (contacts.empty()) {
-        cout << "No contacts to display.\n";
-        return;
-    }
-
-    cout << "\n--- Contact List ---\n";
-    for (const auto& contact : contacts) {
-        contact.display();
-    }
 }
-
 void updateContact(vector<Contact>& contacts) {
-    int id;
-    cout << "Enter the ID of the contact to update: ";
-    cin >> id;
-    cin.ignore();
-
-    for (auto& contact : contacts) {
-        if (contact.getId() == id) {
-            string name, phone;
-
-            cout << "Enter new Name: ";
-            getline(cin, name);
-
-            cout << "Enter new Phone Number: ";
-            getline(cin, phone);
-
-            contact.setName(name);
-            contact.setPhone(phone);
-
-            cout << "Contact updated successfully.\n";
-            return;
-        }
-    }
-
-    cout << "Contact with ID " << id << " not found.\n";
 }
-
 void deleteContact(vector<Contact>& contacts) {
-    int id;
-    cout << "Enter the ID of the contact to delete: ";
-    cin >> id;
-    cin.ignore();
-
-    for (auto it = contacts.begin(); it != contacts.end(); ++it) {
-        if (it->getId() == id) {
-            contacts.erase(it);
-            cout << "Contact deleted successfully.\n";
-            return;
-        }
-    }
-
-    cout << "Contact with ID " << id << " not found.\n";
 }
-
 void saveContactsToFile(const vector<Contact>& contacts) {
-    ofstream file(contactFile, ios::trunc);
-    if (file.is_open()) {
-        for (const auto& contact : contacts) {
-            contact.saveToFile(file);
-        }
-        file.close();
-        cout << "Contacts saved to file successfully.\n";
-    } else {
-        cerr << "Error saving contacts to file.\n";
-    }
 }
-
 void loadContactsFromFile(vector<Contact>& contacts) {
-    ifstream file(contactFile);
-    if (file.is_open()) {
-        string line;
-        while (getline(file, line)) {
-            istringstream iss(line);
-            int id;
-            string name, phone;
-            if (getline(iss, line, ',')) {
-                id = stoi(line);
-                getline(iss, name, ',');
-                getline(iss, phone);
-                contacts.emplace_back(id, name, phone);
-            }
-        }
-        file.close();
-        cout << "Contacts loaded successfully.\n";
-    } else {
-        cerr << "Error opening file for loading contacts.\n";
-    }
-}
+}*/
