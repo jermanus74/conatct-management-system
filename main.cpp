@@ -165,23 +165,4 @@ void saveContactsToFile(const vector<Contact>& contacts) {
 }
 
 void loadContactsFromFile(vector<Contact>& contacts) {
-    ifstream file(contactFile);
-    if (file.is_open()) {
-        string line;
-        while (getline(file, line)) {
-            istringstream iss(line);
-            int id;
-            string name, phone;
-            if (getline(iss, line, ',')) {
-                id = stoi(line);
-                getline(iss, name, ',');
-                getline(iss, phone);
-                contacts.emplace_back(id, name, phone);
-            }
-        }
-        file.close();
-        cout << "Contacts loaded successfully.\n";
-    } else {
-        cerr << "Error opening file for loading contacts.\n";
-    }
 }
