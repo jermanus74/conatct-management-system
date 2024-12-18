@@ -23,31 +23,7 @@ public:
     string getPhone() const { return phone; }
 
     // Setter functions
-    void setId(int newId) { id = newId; }
-    void setName(const string& newName) { name = newName; }
-    void setPhone(const string& newPhone) { phone = newPhone; }
-
-    // Display function
-    void display() const {
-        cout << "ID: " << id << ", Name: " << name << ", Phone: " << phone << endl;
-    }
-
-    // Save contact to file
-    void saveToFile(ofstream& file) const {
-        file << id << "," << name << "," << phone << endl;
-    }
-
-    // Load contact from string
-    static Contact fromString(const string& data) {
-        size_t firstComma = data.find(',');
-        size_t secondComma = data.find(',', firstComma + 1);
-
-        int id = stoi(data.substr(0, firstComma));
-        string name = data.substr(firstComma + 1, secondComma - firstComma - 1);
-        string phone = data.substr(secondComma + 1);
-
-        return Contact(id, name, phone);
-    }
+    
 };
 
 // Function prototypes
