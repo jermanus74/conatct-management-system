@@ -4,58 +4,66 @@
 #include <vector>
 #include <sstream>
 using namespace std;
-
-/*class Contact {
-private:
-    int id;
-    string name,email,phone;
-
-public:
-    // Constructor
-    Contact():id(0),name(""),phone(""),email(""){};
-    Contact(int id,const string & name,const string& phone,const string& email): id(id),name(name),phone(phone),email(email){};
-    // Getter functions
-    int getid()const{return id;}
-    string getname()const {return name;}
-    string getemail()const{return email;}
-    string getphone()const{return phone;}
-    // Setter functions
-    void setname(string&newName){name=newName;}
-    void setid(int new_id){id=new_id;}
-    void setemail(string&newEmail){email=newEmail;}
-    void setphone(string&phoneNo){phone=phoneNo;}
-    // Display function
-    // Save contact to file
-    // Load contact from str
-
-// Function prototypes
-/*void createContact(vector<Contact>& contacts);
-void readContacts(const vector<Contact>& contacts);
-void updateContact(vector<Contact>& contacts);
-void deleteContact(vector<Contact>& contacts);
-void saveContactsToFile(const vector<Contact>& contacts);
-void loadContactsFromFile(vector<Contact>& contacts);*/
 class Contact{
 private:
     string name,email,address,phone;
     int id{};
 };
+void createContact();
+void viewContact();
+void editContact();
+void deleteContact();
+void clearContact();
+void closeProgram();
 const string contactFile = "contacts.txt";
 vector<Contact> contacts;
 
 
 int main(){
-
+int choice{};
+cout<<"-----------------Welcome to Contact Management System-----------------\n"<<endl;
+cout<<"Do you want to?\n"
+      "1.Add contact\n"
+      "2.View contact\n"
+      "3.Edit contact\n"
+      "4.Delete contact\n"
+      "5.Clear the contact list\n"
+      "6.Close the program"<<endl;
+cout<<"Enter your choice: "<<endl;
+cin>>choice;
+    switch (choice) {
+        case 1:
+            createContact();
+            break;
+        case 2:
+            void viewContact();
+            break;
+        case 3:
+            void editContact();
+            break;
+        case 4:
+            void deleteContact();
+            break;
+        case 5:
+            void clearContact();
+            break;
+        case 6:
+            void closeProgram();
+            break;
+        default:
+            cout<<"Invalid selection.Try again"<<endl;
+            main();
+    }
 }
-void createContact(vector<Contact>& contacts) {
+void createContact() {
 }
-void readContacts(const vector<Contact>& contacts) {
+void viewContact() {
 }
-void updateContact(vector<Contact>& contacts) {
+void editContact() {
 }
-void deleteContact(vector<Contact>& contacts) {
+void deleteContact() {
 }
-void saveContactsToFile(const vector<Contact>& contacts) {
+void clearContact() {
 }
-void loadContactsFromFile(vector<Contact>& contacts) {
+void closeProgram() {
 }
