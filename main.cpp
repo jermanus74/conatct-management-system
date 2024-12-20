@@ -4,66 +4,208 @@
 #include <vector>
 #include <sstream>
 using namespace std;
-class Contact{
+
+class Contact {
 private:
-    string name,email,address,phone;
-    int id{};
+    int id;
+    string name;
+    string phone;
+
+public:
+    // Constructor
+    Contact() : id(0), name(""), phone("") {}
+
+    Contact(int id, const string& name, const string& phone) : id(id), name(name), phone(phone) {}
+
+    // Getter functions
+    int getId() const { return id; }
+    string getName() const { return name; }
+    string getPhone() const { return phone; }
+
+    // Setter functions
+    void setId(int newId) { id = newId; }
+    void setName(const string& newName) { name = newName; }
+    void setPhone(const string& newPhone) { phone = newPhone; }
+
+    // Display function
+    void display() const {
+        cout << "ID: " << id << ", Name: " << name << ", Phone: " << phone << endl;
+    }
+
+    // Save contact to file
+    void saveToFile(ofstream& file) const {
+        file << id << "," << name << "," << phone << endl;
+    }
+
+    // Load contact from string
+    static Contact fromString(const string& data) {
+        size_t firstComma = data.find(',');
+        size_t secondComma = data.find(',', firstComma + 1);
+
+        int id = stoi(data.substr(0, firstComma));
+        string name = data.substr(firstComma + 1, secondComma - firstComma - 1);
+        string phone = data.substr(secondComma + 1);
+
+        return Contact(id, name, phone);
+    }
 };
-void createContact();
-void viewContact();
-void editContact();
-void deleteContact();
-void clearContact();
-void closeProgram();
+
+// Function prototypes
+void createContact(vector<Contact>& contacts);
+void readContacts(const vector<Contact>& contacts);
+void updateContact(vector<Contact>& contacts);
+void deleteContact(vector<Contact>& contacts);
+void saveContactsToFile(const vector<Contact>& contacts);
+void loadContactsFromFile(vector<Contact>& contacts);
+
 const string contactFile = "contacts.txt";
-vector<Contact> contacts;
 
+int main() {
+    vector<Contact> contacts;
+    loadContactsFromFile(contacts);
 
-int main(){
-int choice{};
-cout<<"-----------------Welcome to Contact Management System-----------------\n"<<endl;
-cout<<"Do you want to?\n"
-      "1.Add contact\n"
-      "2.View contact\n"
-      "3.Edit contact\n"
-      "4.Delete contact\n"
-      "5.Clear the contact list\n"
-      "6.Close the program"<<endl;
-cout<<"Enter your choice: "<<endl;
-cin>>choice;
-    switch (choice) {
-        case 1:
-            createContact();
-            break;
-        case 2:
-            void viewContact();
-            break;
-        case 3:
-            void editContact();
-            break;
-        case 4:
-            void deleteContact();
-            break;
-        case 5:
-            void clearContact();
-            break;
-        case 6:
-            void closeProgram();
-            break;
-        default:
-            cout<<"Invalid selection.Try again"<<endl;
-            main();
+    int choice;
+    do {
+        cout << "\n--- Contact Management System ---\n"
+             << "1. Create Contact\n"
+             << "2. Read Contacts\n"
+             << "3. Update Contact\n"
+             << "4. Delete Contact\n"
+             << "5. Exit\n"
+             << "Enter your choice: ";
+        cin >> choice;
+        cin.ignore();
+
+        switch (choice) {
+            case 1:
+                createContact(contacts);
+                break;
+            case 2:
+                readContacts(contacts);
+                break;
+            case 3:
+                updateContact(contacts);
+                break;
+            case 4:
+                deleteContact(contacts);
+                break;
+            case 5:
+                saveContactsToFile(contacts);
+                cout << "Exiting program...\n";
+                break;
+            default:
+                cout << "Invalid input. Please try again.\n";
+        }
+    } while (choice != 5);
+
+    return 0;
+}
+
+void createContact(vector<Contact>& contacts) {
+    int id;
+    string name, phone;
+
+    cout << "Enter Contact ID: ";
+    cin >> id;
+    cin.ignore();
+
+    cout << "Enter Contact Name: ";
+    getline(cin, name);
+
+    cout << "Enter Phone Number: ";
+    getline(cin, phone);
+
+    contacts.emplace_back(id, name, phone);
+    cout << "Contact created successfully.\n";
+}
+
+void readContacts(const vector<Contact>& contacts) {
+    if (contacts.empty()) {
+        cout << "No contacts to display.\n";
+        return;
+    }
+
+    cout << "\n--- Contact List ---\n";
+    for (const auto& contact : contacts) {
+        contact.display();
     }
 }
-void createContact() {
+
+void updateContact(vector<Contact>& contacts) {
+    int id;
+    cout << "Enter the ID of the contact to update: ";
+    cin >> id;
+    cin.ignore();
+
+    for (auto& contact : contacts) {
+        if (contact.getId() == id) {
+            string name, phone;
+
+            cout << "Enter new Name: ";
+            getline(cin, name);
+
+            cout << "Enter new Phone Number: ";
+            getline(cin, phone);
+
+            contact.setName(name);
+            contact.setPhone(phone);
+
+            cout << "Contact updated successfully.\n";
+            return;
+        }
+    }
+
+    cout << "Contact with ID " << id << " not found.\n";
 }
-void viewContact() {
+
+void deleteContact(vector<Contact>& contacts) {
+    int id;
+    cout << "Enter the ID of the contact to delete: ";
+    cin >> id;
+    cin.ignore();
+
+    for (auto it = contacts.begin(); it != contacts.end(); ++it) {
+        if (it->getId() == id) {
+            contacts.erase(it);
+            cout << "Contact deleted successfully.\n";
+            return;
+        }
+    }
+
+    cout << "Contact with ID " << id << " not found.\n";
 }
-void editContact() {
+
+void saveContactsToFile(const vector<Contact>& contacts) {
+    ofstream file(contactFile, ios::trunc);
+    if (file.is_open()) {
+        for (const auto& contact : contacts) {
+            contact.saveToFile(file);
+        }
+        file.close();
+        cout << "Contacts saved to file successfully.\n";
+    } else {
+        cerr << "Error saving contacts to file.\n";
+    }
 }
-void deleteContact() {
-}
-void clearContact() {
-}
-void closeProgram() {
+
+void loadContactsFromFile(vector<Contact>& contacts) {
+    ifstream file(contactFile);
+    if (file.is_open()) {
+        string line;
+        while (getline(file, line)) {
+            istringstream iss(line);
+            int id;
+            string name, phone;
+            if (getline(iss, line, ',')) {
+                id = stoi(line);
+                getline(iss, name, ',');
+                getline(iss, phone);
+                contacts.emplace_back(id, name, phone);
+            }
+        }
+        file.close();
+        cout << "Contacts loaded successfully.\n";
+    } else {
+        cerr << "Error opening file for loading contacts.\n";
+    }
 }
