@@ -31,3 +31,4 @@ ContactStruct loadContact(){
 
     return contacts;
 }
+//functiin to add contacys
