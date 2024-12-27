@@ -19,14 +19,16 @@ void createContact();
 void readContact();
 void updateContact();
 void deleteContact();
-ContactStruct loadContact();
+vector<ContactStruct>loadContact();
 void saveContact(const vector<ContactStruct>& products);
+
+vector<ContactStruct> contactList;
 
 const string filename = "contacts.txt";
 int main(){
-    ContactStruct contacts=loadContact();
+   contactList=loadContact();
 }
-ContactStruct loadContact(){
+vector<ContactStruct> loadContact(){
     ContactStruct contacts;
 
     return contacts;
