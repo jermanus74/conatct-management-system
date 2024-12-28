@@ -140,6 +140,7 @@ vector<ContactStruct> loadContact() {
     } else {
         cout << "No existing user database found. Starting fresh." << endl;
     }
+//    contact.clear();
     return contact;
 }
 void saveContact(const vector<ContactStruct>& contact) {
@@ -150,7 +151,7 @@ void saveContact(const vector<ContactStruct>& contact) {
                  << c.email << '\n'
                  << c.phoneNo << '\n'
                  << c.address << '\n';
-            cout<<"------------------------------"<<endl;
+//            cout<<"------------------------------"<<endl;
         }
         file.close();
     } else {
