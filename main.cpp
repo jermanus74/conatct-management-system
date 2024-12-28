@@ -2,7 +2,6 @@
 #include <string>
 #include <fstream>
 #include <vector>
-#include <sstream>
 using namespace std;
 
 struct ContactStruct{
@@ -12,7 +11,7 @@ struct ContactStruct{
 
 //    function to display contact details
     void display() const{
-        cout<<"Contact ID:"<<id<<"\nName: "<<fullname<<"\nEmail: "<<email<<"\nAddress: "<<address<<endl;
+        cout<<"Contact ID: "<<id<<"\nName: "<<fullname<<"\nPhone No: "<<phoneNo<<"\nEmail: "<<email<<"\nAddress: "<<address<<endl;
     }
 };
 
@@ -62,6 +61,7 @@ cout<<"Invalid choice"<<endl;
 }
 return 0;
 }
+
 void createContact(){
     ContactStruct contacts;
     bool idExist,fnameExist,emailExist,pExist;
@@ -77,10 +77,6 @@ void createContact(){
                 break;
             }
         }
-
-
-
-
     }while(fnameExist);
     do {
         idExist=false;
@@ -125,6 +121,7 @@ void createContact(){
     saveContact(contactList);
     cout << "Account created successfully!" << endl;
 }
+
 vector<ContactStruct> loadContact() {
     vector<ContactStruct> contact;
     if (ifstream file(contact_file); file.is_open()) {
@@ -143,6 +140,7 @@ vector<ContactStruct> loadContact() {
 //    contact.clear();
     return contact;
 }
+
 void saveContact(const vector<ContactStruct>& contact) {
     if (ofstream file(contact_file, ios::trunc); file.is_open()) {
         for (const auto& c : contact) {
@@ -151,7 +149,7 @@ void saveContact(const vector<ContactStruct>& contact) {
                  << c.email << '\n'
                  << c.phoneNo << '\n'
                  << c.address << '\n';
-//            cout<<"------------------------------"<<endl;
+        file<<"------------------------------"<<endl;
         }
         file.close();
     } else {
