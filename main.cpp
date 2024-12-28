@@ -125,40 +125,37 @@ void createContact(){
     saveContact(contactList);
     cout << "Account created successfully!" << endl;
 }
-vector<ContactStruct> loadContact(){
+vector<ContactStruct> loadContact() {
     vector<ContactStruct> contact;
     if (ifstream file(contact_file); file.is_open()) {
         ContactStruct contacts;
-        while (getline(file, contacts.id)) {
-            getline(file, contacts.fullname);
-            getline(file, contacts.email);
-            getline(file, contacts.phoneNo);
-            getline(file, contacts.address);
+        while (getline(file, contacts.id) &&
+               getline(file, contacts.fullname) &&
+               getline(file, contacts.email) &&
+               getline(file, contacts.phoneNo) &&
+               getline(file, contacts.address)) {
             contact.push_back(contacts);
         }
         file.close();
     } else {
         cout << "No existing user database found. Starting fresh." << endl;
     }
-    // contact.clear();
-return contact;
-
+    return contact;
 }
-void saveContact(const vector<ContactStruct>& contact){
-    if (ofstream file(contact_file,ios::trunc); file.is_open()) {
-         for (const auto& c:contact) {
-             file<<"\nContact ID: "<<c.id
-                     <<"\nName: "<<c.fullname
-                     <<"\nEmail: "<<c.email
-                     <<"\nPhone: "<<c.phoneNo
-                     <<"\nAddress: "<<c.address
-                     <<endl;
-         }
-         file.close();
-     }
-    else {
-         cout << "No existing user database found. Starting fresh." << endl;
-     }
+void saveContact(const vector<ContactStruct>& contact) {
+    if (ofstream file(contact_file, ios::trunc); file.is_open()) {
+        for (const auto& c : contact) {
+            file << c.id << '\n'
+                 << c.fullname << '\n'
+                 << c.email << '\n'
+                 << c.phoneNo << '\n'
+                 << c.address << '\n';
+            cout<<"------------------------------"<<endl;
+        }
+        file.close();
+    } else {
+        cout << "No existing user database found. Starting fresh." << endl;
+    }
 }
 
 void readContact() {
